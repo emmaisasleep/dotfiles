@@ -1,0 +1,107 @@
+# ~/.bashrc
+
+# ── Guard ─────────────────────────────────────────────────────────────────────
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# ── Shell Options ─────────────────────────────────────────────────────────────
+shopt -s histappend     # append to history file, don't overwrite
+shopt -s checkwinsize   # update LINES/COLUMNS after each command
+shopt -s globstar       # ** matches files and dirs recursively
+shopt -s cmdhist        # save multi-line commands as single history entry
+shopt -s cdspell        # correct minor typos in cd paths
+shopt -s dirspell       # typo correction in path completion
+shopt -s autocd         # type a dir name to cd into it
+shopt -s nocaseglob     # case-insensitive globbing
+
+# ── History ───────────────────────────────────────────────────────────────────
+HISTSIZE=100000
+HISTFILESIZE=200000
+HISTTIMEFORMAT="%F %T "
+HISTCONTROL=ignoreboth:erasedups
+
+# Sync history across all open terminals on every command
+PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+# ── PATH ──────────────────────────────────────────────────────────────────────
+[[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && export PATH="$HOME/.local/bin:$PATH"
+
+# ── Environment ───────────────────────────────────────────────────────────────
+if command -v hx &>/dev/null; then
+    export EDITOR='hx'
+    export VISUAL='hx'
+else
+    export EDITOR='nano'
+    export VISUAL='nano'
+fi
+export SUDO_EDITOR='nano'
+
+export HELIX_RUNTIME=~/src/helix/runtime
+
+export LESS='-R --quit-if-one-screen --no-init'
+export MANPAGER='less -X'
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# ── Colors ────────────────────────────────────────────────────────────────────
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+fi
+
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# ── Prompt ────────────────────────────────────────────────────────────────────
+
+# Uncomment to use Starship (disable the block below when enabled)
+eval "$(starship init bash)"
+
+# Manual PS1 — active when Starship is not loaded
+if [ -z "${STARSHIP_SHELL}" ]; then
+    if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+        debian_chroot=$(cat /etc/debian_chroot)
+    fi
+
+    __set_exit_code() { __exit_code=$?; }
+    PROMPT_COMMAND="__set_exit_code; ${PROMPT_COMMAND}"
+
+    __prompt_git() {
+        local branch
+        branch=$(git branch 2>/dev/null | sed -n 's/^\* //p')
+        [ -n "$branch" ] && printf ' \[\033[01;33m\](%s)\[\033[00m\]' "$branch"
+    }
+
+    __prompt_exit() {
+        [ "${__exit_code}" -eq 0 ] || printf ' \[\033[01;31m\]✗\[\033[00m\]'
+    }
+
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(__prompt_git)$(__prompt_exit)\$ '
+    else
+        PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    fi
+
+    case "$TERM" in
+        xterm*|rxvt*)
+            PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+            ;;
+    esac
+fi
+
+# ── Aliases ───────────────────────────────────────────────────────────────────
+[ -f ~/.bash_aliases ] && . ~/.bash_aliases
+
+# ── Functions ───────────────────────────────────────────────────────────────────
+[ -f ~/.bash_functions ] && . ~/.bash_functions
+
+# ── Completion ────────────────────────────────────────────────────────────────
+if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+fi
+
+# source -- ~/.local/share/blesh/ble.sh
+eval "$(zoxide init bash)"

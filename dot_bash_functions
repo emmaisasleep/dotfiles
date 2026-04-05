@@ -1,0 +1,23 @@
+# ~/.bash_functions
+# Use `_` in front of function name
+# Generate alias to normalize
+
+# ── System Update ─────────────────────────────────────────────────────────────────
+
+_update() {
+	set -e
+	sudo apt update
+	sudo apt full-upgrade -y
+	sudo apt autoremove -y
+	sudo apt autoclean -y
+	echo 'System update complete.'
+	set +e
+
+	if declare -f pyenv > /dev/null 2>&1; then
+	    pyenv rehash && echo 'pyenv rehashed.'
+	fi
+
+	if declare -f nvm > /dev/null 2>&1; then
+	    nvm cache clear && echo 'nvm cache cleared.'
+	fi
+}

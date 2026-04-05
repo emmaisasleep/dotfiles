@@ -1,0 +1,71 @@
+# ~/.bash_aliases
+
+# ── Navigation ────────────────────────────────────────────────────────────────
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias -- -='cd -'
+
+# ── Functions ────────────────────────────────────────────────────────────────
+alias update='_update'
+
+# ── Listing ───────────────────────────────────────────────────────────────────
+alias ls='ls --color=auto'
+alias ll='ls -lhF --color=auto'
+alias la='ls -A --color=auto'
+alias lla='ls -lAh --color=auto'
+alias l='ls -CF --color=auto'
+alias lt='ls -lht --color=auto'
+alias lS='ls -lhS --color=auto'
+
+# ── Search / Filter ───────────────────────────────────────────────────────────
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# ── File Operations ───────────────────────────────────────────────────────────
+alias rm='rm -I'
+alias rmdir='rm -rf'
+alias cp='cp -iv'
+alias cpr='cp -riv'
+alias mv='mv -iv'
+alias mkdir='mkdir -vp'
+alias bat='batcat'
+alias cat='batcat'
+
+# ── Disk / System ─────────────────────────────────────────────────────────────
+alias df='df -h'
+alias du='du -h'
+alias free='free -h'
+alias reboot='sudo reboot now'
+alias shutdown='sudo shutdown now'
+
+# ── Git ───────────────────────────────────────────────────────────────────────
+alias g='git'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gca='git commit --amend'
+alias gp='git push'
+alias gpl='git pull'
+alias gf='git fetch --prune'
+alias gl='git log --oneline --graph --decorate'
+alias gla='git log --oneline --graph --decorate --all'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gco='git checkout'
+alias gsw='git switch'
+alias gb='git branch'
+alias grb='git rebase'
+alias gst='git stash'
+
+# ── Misc ──────────────────────────────────────────────────────────────────────
+alias c='clear'
+alias h='history'
+alias ff='fastfetch'
+alias gen-ssh='ssh-keygen -t ed25519'
+alias path='echo "$PATH" | tr ":" "\n"'
+alias now='date +"%F %T"'
+alias reload='source ~/.bashrc'
+alias rc='$EDITOR ~/.bashrc'
+alias al='$EDITOR ~/.bash_aliases'
