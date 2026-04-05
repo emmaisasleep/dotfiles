@@ -38,25 +38,20 @@ The three bash files have distinct roles — put new content in the right place:
 ## Structure
 
 - `dot_bashrc`, `dot_bash_aliases`, `dot_bash_functions` — bash shell configuration (see above)
+- `dot_gitconfig` — global git identity (`user.name`, `user.email`, `init.defaultBranch`, `pull.rebase`)
+- `dot_profile`, `dot_bash_logout` — login shell init and logout script
+- `private_dot_ssh/config` — SSH host aliases; includes `emma-gh` which the git remote for this repo uses (`git@emma-gh:emmaisasleep/dotfiles.git`). **Must be applied before git operations work on a new machine.**
 - `dot_config/starship.toml` — Starship prompt (Catppuccin Macchiato theme)
-- `dot_config/helix/config.toml` — Helix editor theme
-- `dot_config/bat/` — bat (cat replacement) theme
-- `dot_config/git/ignore` — global gitignore
+- `dot_config/helix/config.toml` — Helix editor config (theme + relative line numbers, cursor shapes, bufferline)
+- `dot_config/bat/` — bat theme (Catppuccin Macchiato, bundled as `.tmTheme`)
+- `dot_config/git/ignore` — global gitignore (excludes `.claude/settings.local.json` from all repos)
 - `private_dot_local/share/bash-completion/completions/fnm` — FNM tab completions
 - `.chezmoiignore` — prevents `*.md` files from being deployed to `$HOME`
-
-## Key Tools Configured
-
-- **Helix** — primary editor (`hx`), set via `HELIX_RUNTIME`
-- **Starship** — prompt, initialized in `.bashrc`
-- **Zoxide** — smart `cd`, initialized in `.bashrc`
-- **FNM** — Node.js version manager with `--use-on-cd`
-- **bat** — syntax-highlighted file viewer (replaces `cat`)
-
-All tools use the **Catppuccin Macchiato** color scheme.
 
 ## Workflow Notes
 
 - A PostToolUse hook in `.claude/settings.local.json` runs `chezmoi diff` automatically after every file edit — check its output to see pending `$HOME` changes before running `chezmoi apply`.
 - `HELIX_RUNTIME` points to `$HOME/src/helix/runtime` (local build, not system package).
 - Reload shell config after editing: `source ~/.bashrc` or use the `reload` alias.
+- **`chezmoi add` requires a TTY** when `autoCommit=true` + `promptString` is configured in `~/.config/chezmoi/chezmoi.toml`. In non-interactive contexts (scripts, Claude Code bash), temporarily set `autoCommit = false`, run the add, then restore it — then commit manually.
+- **`~/.config/chezmoi/chezmoi.toml` cannot be tracked** via `chezmoi add` (chezmoi refuses to manage its own config). Use a config template (`.chezmoi.toml.tmpl`) instead.
