@@ -43,7 +43,7 @@ install all tools via `run_once_install-tools.sh`, and create `~/src/`.
 | `~/.bash_logout` | Login shell cleanup |
 | `~/.profile` | Login shell initialization |
 | `~/.gitconfig` | Global git identity and settings |
-| `~/.ssh/config` | SSH host aliases (includes `emma-gh` for this repo's remote) |
+| `~/.ssh/config` | SSH host aliases — age-encrypted; includes `emma-gh` for this repo's remote |
 | `~/.config/starship.toml` | Starship prompt — Catppuccin Macchiato theme |
 | `~/.config/helix/config.toml` | Helix editor settings |
 | `~/.config/bat/` | bat syntax highlighter — Catppuccin Macchiato theme |
