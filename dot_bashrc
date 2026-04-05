@@ -29,6 +29,9 @@ PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; h
 [[ ":$PATH:" != *":$HOME/.local/bin:"* ]] && export PATH="$HOME/.local/bin:$PATH"
 
 # ── Environment ───────────────────────────────────────────────────────────────
+
+export HELIX_RUNTIME="$HOME/src/helix/runtime"
+
 if command -v hx &>/dev/null; then
     export EDITOR='hx'
     export VISUAL='hx'
@@ -37,8 +40,6 @@ else
     export VISUAL='nano'
 fi
 export SUDO_EDITOR='nano'
-
-export HELIX_RUNTIME=~/src/helix/runtime
 
 export LESS='-R --quit-if-one-screen --no-init'
 export MANPAGER='less -X'
@@ -91,7 +92,7 @@ fi
 # ── Aliases ───────────────────────────────────────────────────────────────────
 [ -f ~/.bash_aliases ] && . ~/.bash_aliases
 
-# ── Functions ───────────────────────────────────────────────────────────────────
+# ── Functions ─────────────────────────────────────────────────────────────────
 [ -f ~/.bash_functions ] && . ~/.bash_functions
 
 # ── Completion ────────────────────────────────────────────────────────────────
@@ -103,5 +104,14 @@ if ! shopt -oq posix; then
     fi
 fi
 
-# source -- ~/.local/share/blesh/ble.sh
+# ── Zoxide ────────────────────────────────────────────────────────────────────
+
 eval "$(zoxide init bash)"
+
+# ── fnm ───────────────────────────────────────────────────────────────────────
+
+FNM_PATH="/home/erik/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "$(fnm env --use-on-cd --shell bash)"
+fi
