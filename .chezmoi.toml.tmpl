@@ -1,0 +1,18 @@
+{{- $name  := promptStringOnce . "name"  "Full name" -}}
+{{- $email := promptStringOnce . "email" "Git email" -}}
+{{- $ageRecipient := output "sh" "-c" "grep 'public key:' ~/.config/age/key.txt | awk '{print $NF}'" | trim -}}
+
+encryption = "age"
+
+[data]
+  name  = {{ $name | quote }}
+  email = {{ $email | quote }}
+
+[git]
+  autoCommit = true
+  commitMessageTemplate = "{{ "{{" }} promptString \"Commit message\" {{ "}}" }}"
+  autoPush   = false
+
+[age]
+  identity  = "~/.config/age/key.txt"
+  recipient = {{ $ageRecipient | quote }}

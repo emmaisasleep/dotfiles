@@ -4,14 +4,33 @@ Personal dotfiles managed with [chezmoi](https://chezmoi.io).
 
 ## Bootstrap
 
+### Prerequisites (fresh machine)
+
+SSH config is age-encrypted. Before `chezmoi apply` can decrypt it, place your age key:
+
 ```bash
+mkdir -p ~/.config/age
+# Copy your age private key to ~/.config/age/key.txt
+chmod 600 ~/.config/age/key.txt
+```
+
+### Install
+
+```bash
+sh -c "$(curl -fsLS get.chezmoi.io)"
 chezmoi init git@emma-gh:emmaisasleep/dotfiles.git
 chezmoi apply
 ```
 
-> `~/.ssh/config` (containing the `emma-gh` host alias) must already exist before
-> the git remote will resolve. On a truly fresh machine, clone via HTTPS first,
-> apply, then re-add the remote.
+> On a truly fresh machine where `~/.ssh/config` doesn't exist yet, bootstrap via HTTPS first:
+>
+> ```bash
+> chezmoi init https://github.com/emmaisasleep/dotfiles.git
+> chezmoi apply   # decrypts SSH config, installs tools via run_once_ scripts
+> ```
+
+First `chezmoi apply` will prompt for your name and email (stored locally, never committed),
+install all tools via `run_once_install-tools.sh`, and create `~/src/`.
 
 ## Managed files
 

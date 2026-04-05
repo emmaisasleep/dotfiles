@@ -38,18 +38,22 @@ The three bash files have distinct roles — put new content in the right place:
 ## Structure
 
 - `dot_bashrc`, `dot_bash_aliases`, `dot_bash_functions` — bash shell configuration (see above)
-- `dot_gitconfig` — global git identity (`user.name`, `user.email`, `init.defaultBranch`, `pull.rebase`)
+- `dot_gitconfig.tmpl` — global git identity; `name`/`email` injected from `.chezmoi.toml.tmpl` data
+- `.chezmoi.toml.tmpl` — chezmoi config template; prompts for `name`/`email` on first apply per machine, derives age recipient from `~/.config/age/key.txt`
 - `dot_profile`, `dot_bash_logout` — login shell init and logout script
-- `private_dot_ssh/config` — SSH host aliases; includes `emma-gh` which the git remote for this repo uses (`git@emma-gh:emmaisasleep/dotfiles.git`). **Must be applied before git operations work on a new machine.**
+- `private_dot_ssh/encrypted_config.age` — SSH host aliases (age-encrypted); age key at `~/.config/age/key.txt`. **Must be applied before git operations work on a new machine.**
 - `dot_config/starship.toml` — Starship prompt (Catppuccin Macchiato theme)
 - `dot_config/helix/config.toml` — Helix editor config (theme + relative line numbers, cursor shapes, bufferline)
 - `dot_config/bat/` — bat theme (Catppuccin Macchiato, bundled as `.tmTheme`)
 - `dot_config/git/ignore` — global gitignore (excludes `.claude/settings.local.json` from all repos)
 - `private_dot_local/share/bash-completion/completions/fnm` — FNM tab completions
-- `.chezmoiignore` — prevents `*.md` files from being deployed to `$HOME`
+- `run_once_install-tools.sh` — installs starship, zoxide, fnm, bat, fastfetch, age on first apply
+- `run_once_setup-src-dir.sh` — creates `~/src/` for local builds (e.g. Helix)
+- `.chezmoiignore` — prevents `*.md` and `src/` from deploying to `$HOME`
 
 ## Workflow Notes
 
+- **Age key required for decryption** — `~/.config/age/key.txt` must exist before `chezmoi apply` can decrypt `private_dot_ssh/encrypted_config.age`. On a fresh machine, place the key manually before running `chezmoi apply`.
 - A PostToolUse hook in `.claude/settings.local.json` runs `chezmoi diff` automatically after every file edit — check its output to see pending `$HOME` changes before running `chezmoi apply`.
 - `HELIX_RUNTIME` points to `$HOME/src/helix/runtime` (local build, not system package).
 - Reload shell config after editing: `source ~/.bashrc` or use the `reload` alias.
