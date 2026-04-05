@@ -1,0 +1,29 @@
+Host prism-lms-v2-readonly
+  HostName github.com
+  IdentityFile ~/.ssh/prism-lms-v2-readonly
+  AddKeysToAgent yes
+  IdentitiesOnly yes
+  PasswordAuthentication no
+  Port 22
+  User git
+  PubkeyAuthentication yes
+
+Host prism-lms-v2-range-access-readonly
+  HostName github.com
+  IdentityFile ~/.ssh/prism-lms-v2-range-access-readonly
+  AddKeysToAgent yes
+  IdentitiesOnly yes
+  PasswordAuthentication no
+  Port 22
+  User git
+  PubkeyAuthentication yes
+
+Host emma-gh
+  HostName github.com
+  IdentityFile ~/.ssh/debby
+  AddKeysToAgent yes
+  identitiesOnly yes
+  PasswordAuthentication no
+  Port 22
+  User git
+  PubkeyAuthentication yes

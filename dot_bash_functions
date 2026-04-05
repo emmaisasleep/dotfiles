@@ -12,12 +12,4 @@ _update() {
 	sudo apt autoclean -y
 	echo 'System update complete.'
 	set +e
-
-	if declare -f pyenv > /dev/null 2>&1; then
-	    pyenv rehash && echo 'pyenv rehashed.'
-	fi
-
-	if declare -f nvm > /dev/null 2>&1; then
-	    nvm cache clear && echo 'nvm cache cleared.'
-	fi
 }
